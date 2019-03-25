@@ -8,12 +8,26 @@ console.log('Before');
 //     });
 // });
 
-getUser(1)
+// Promise-based approach
+/*getUser(1)
     .then(user => getRepositories(user))
     .then(repos => getCommits(repos[0]))
     .then(commits => console.log('Commits', commits))
-    .catch(error => console.log(error.message));
+    .catch(error => console.log(error.message));*/
 
+// Async await approach
+async function displayCommitsAsync() {
+    try {
+        const user = await getUser(1);
+        const repos = await getRepositories(user);
+        const commits = await getCommits(repos[0]);
+        console.log(commits);
+    } catch (err) {
+        console.log('Error', err.message);
+    }
+}
+
+displayCommitsAsync();
 
 console.log('After');
 
@@ -30,7 +44,8 @@ function getRepositories(user) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             console.log('Calling GitHub API...');
-            resolve(['repo1', 'repo2', 'repo3']);
+            // resolve(['repo1', 'repo2', 'repo3']);
+            reject(new Error('Could not get repos...'));
         }, 2000);
     });
 }
